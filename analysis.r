@@ -1,0 +1,30 @@
+# Install packages (only first time)
+install.packages("ggplot2")
+install.packages("dplyr")
+
+# Load libraries
+library(ggplot2)
+library(dplyr)
+
+# Load your CSV file
+data <- read.csv("D:/Users/SNEHA_NSUT/SEM-6/HnSwt-Sem-6/Major Project/data/distraction_log.csv")
+
+# Convert Timestamp to proper format
+data$Timestamp <- as.POSIXct(data$Timestamp, format="%Y-%m-%d %H:%M:%S")
+
+# Extract time (hour)
+data$Hour <- format(data$Timestamp, "%H")
+
+# Count distraction frequency
+summary_data <- data %>%
+  group_by(Hour, Status) %>%
+  summarise(count = n())
+
+# Plot graph
+ggplot(summary_data, aes(x=Hour, y=count, fill=Status)) +
+  geom_bar(stat="identity", position="dodge") +
+  labs(title="Focus vs Distraction by Hour",
+       x="Time (Hour)",
+       y="Count") +
+  theme_minimal()
+

@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  spark-analysis:
+    build: .
+    container_name: focus_monitor_app
+    ports:
+      - "5000:5000"          # dashboard accessible at localhost:5000
+    volumes:
+      - ./data:/app/data     # mount the folder containing distraction_log.csv
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
